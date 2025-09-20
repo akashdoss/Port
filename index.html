@@ -1,0 +1,606 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Akash Selvadoss N - Portfolio</title>
+  <style>
+    /* --- Base & Typography --- */
+    * { 
+      margin: 0; 
+      padding: 0; 
+      box-sizing: border-box; 
+    }
+    html {
+      scroll-behavior: smooth;
+    }
+    body {
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      background: #0d0d0d;
+      color: #e0e0e0; /* Slightly softer white for text */
+      overflow-x: hidden;
+    }
+    h1, h2, strong {
+      color: #fff;
+    }
+    h2 {
+      color: #ffcc70;
+      margin-bottom: 25px; /* More space below headings */
+      text-transform: uppercase;
+      letter-spacing: 1.5px;
+      font-size: 1.6rem;
+    }
+    p {
+      line-height: 1.7; /* Improved readability for paragraphs */
+      margin-bottom: 10px;
+    }
+
+    /* --- Background Canvas --- */
+    .particles {
+      position: fixed;
+      top: 0; left: 0;
+      width: 100%; height: 100%;
+      z-index: -1;
+      pointer-events: none;
+    }
+
+    /* --- Navigation Bar --- */
+    nav {
+      position: sticky;
+      top: 0;
+      width: 100%;
+      padding: 15px 5%;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      background: rgba(13, 13, 13, 0.7);
+      backdrop-filter: blur(10px);
+      z-index: 100;
+      border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+    }
+    nav a {
+      color: #e0e0e0;
+      text-decoration: none;
+      margin: 0 20px;
+      font-weight: 500;
+      transition: color 0.3s ease, transform 0.3s ease;
+    }
+    nav a:hover, nav a.active {
+      color: #ffcc70;
+      transform: translateY(-2px);
+    }
+
+    /* --- Social Bar --- */
+    .social-bar {
+      position: fixed;
+      top: 50%; /* Centered vertically */
+      right: 20px;
+      transform: translateY(-50%);
+      display: flex;
+      flex-direction: column; /* Stacked vertically */
+      gap: 15px;
+      z-index: 10;
+    }
+    .social-bar a img {
+      width: 28px; height: 28px;
+      filter: drop-shadow(0 0 5px rgba(255,255,255,0.6));
+      transition: transform 0.3s, filter 0.3s;
+    }
+    .social-bar a:hover img {
+      transform: scale(1.2);
+      filter: drop-shadow(0 0 8px #ffcc70);
+    }
+
+    /* --- Header --- */
+    header {
+      height: 100vh; /* Full screen height */
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      text-align: center;
+      padding: 0 20px;
+    }
+    header h1 {
+      font-size: clamp(2.5rem, 8vw, 4.5rem); /* Responsive font size */
+      background: linear-gradient(90deg, #fff, #ffcc70, #ff6ec7, #32e0c4);
+      background-size: 400%;
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      animation: glitter 8s linear infinite;
+    }
+    @keyframes glitter {
+      0%, 100% { background-position: 0% 50%; }
+      50% { background-position: 100% 50%; }
+    }
+    header a.btn {
+      margin-top: 30px;
+      display: inline-block;
+      padding: 14px 28px;
+      border-radius: 50px;
+      background: rgba(255,255,255,0.1);
+      border: 1px solid rgba(255, 255, 255, 0.2);
+      color: #fff;
+      text-decoration: none;
+      font-weight: 500;
+      transition: all 0.3s ease;
+    }
+    header a.btn:hover {
+      background: rgba(255,204,112,0.8);
+      color: #0d0d0d;
+      border-color: #ffcc70;
+      transform: scale(1.05) translateY(-3px);
+      box-shadow: 0 8px 20px rgba(255, 204, 112, 0.3);
+    }
+
+    /* --- Sections (IMPROVED LAYOUT) --- */
+    main {
+      padding: 0 20px; /* Add padding for smaller screens */
+    }
+    section {
+      max-width: 900px;
+      margin: 100px auto; /* Increased vertical margin for spacing */
+      padding: 40px; /* Increased padding */
+      border-radius: 15px;
+      background: rgba(20, 20, 20, 0.6);
+      backdrop-filter: blur(12px);
+      box-shadow: 0 10px 30px rgba(0,0,0,0.5);
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      transition: transform 0.3s ease, box-shadow 0.3s ease;
+    }
+     section:hover {
+        box-shadow: 0 15px 40px rgba(0,0,0,0.7);
+        transform: translateY(-5px);
+    }
+
+    /* --- About Me Section with Profile Picture (NEW) --- */
+    .about-container {
+        display: flex;
+        align-items: center;
+        gap: 40px; /* Space between image and text */
+    }
+    .profile-picture-container {
+        flex-shrink: 0;
+    }
+    .profile-picture {
+        width: 180px;
+        height: 180px;
+        border-radius: 50%; /* Perfect circle */
+        object-fit: cover; /* Prevents image stretching */
+        border: 4px solid #ffcc70;
+        box-shadow: 0 0 20px rgba(255, 204, 112, 0.4);
+    }
+    .about-text {
+        flex-grow: 1;
+    }
+
+
+    /* --- Custom List Styling --- */
+    #skills ul, #certifications ul {
+        list-style: none;
+        padding-left: 10px;
+    }
+    #skills ul li, #certifications ul li {
+        position: relative;
+        padding-left: 30px;
+        margin-bottom: 15px; /* Space out list items */
+        font-size: 1.05rem;
+    }
+    #skills ul li::before, #certifications ul li::before {
+        content: '▹'; /* Custom bullet point */
+        position: absolute;
+        left: 0;
+        top: 0;
+        color: #ffcc70;
+        font-weight: bold;
+    }
+
+    /* --- Project Grid --- */
+    .project-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+      gap: 30px;
+    }
+    .project-card {
+      background: rgba(255,255,255,0.05);
+      border-radius: 10px;
+      padding: 25px;
+      box-shadow: 0 4px 15px rgba(0,0,0,0.4);
+      transition: transform 0.3s ease, box-shadow 0.3s ease;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      border: 1px solid rgba(255, 255, 255, 0.1);
+    }
+    .project-card:hover {
+      transform: translateY(-10px);
+      box-shadow: 0 12px 30px rgba(0,0,0,0.6);
+    }
+    .project-card strong {
+      font-size: 1.3em;
+      margin-bottom: 15px;
+      color: #ffcc70;
+    }
+    .project-links-container {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 15px;
+      margin-top: 20px;
+    }
+    .project-link {
+      display: inline-flex; /* Use flex to align icon and text */
+      align-items: center;
+      gap: 8px; /* Space between icon and text */
+      padding: 8px 18px;
+      background: rgba(255, 204, 112, 0.1);
+      color: #ffcc70;
+      text-decoration: none;
+      font-weight: bold;
+      border-radius: 20px;
+      border: 1px solid #ffcc70;
+      transition: background 0.3s, color 0.3s;
+    }
+    .project-link:hover {
+      background: #ffcc70;
+      color: #0d0d0d;
+    }
+
+    /* --- Contact Form --- */
+    #contact-form {
+      margin-top: 30px;
+      display: flex;
+      flex-direction: column;
+      gap: 20px;
+    }
+    #contact-form input,
+    #contact-form textarea {
+      width: 100%;
+      padding: 15px;
+      background: rgba(255, 255, 255, 0.05);
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      border-radius: 8px;
+      color: #e0e0e0;
+      font-family: inherit;
+      font-size: 1rem;
+    }
+    #contact-form input:focus,
+    #contact-form textarea:focus {
+      outline: none;
+      border-color: #ffcc70;
+      box-shadow: 0 0 10px rgba(255, 204, 112, 0.3);
+    }
+    #contact-form textarea {
+      min-height: 150px;
+      resize: vertical;
+    }
+    #contact-form button {
+      padding: 14px 28px;
+      border-radius: 50px;
+      background: #ffcc70;
+      border: 1px solid #ffcc70;
+      color: #0d0d0d;
+      font-weight: bold;
+      font-size: 1rem;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      align-self: flex-start; /* Align button to the left */
+    }
+    #contact-form button:hover {
+      background: transparent;
+      color: #ffcc70;
+      transform: scale(1.05);
+    }
+    
+    #form-status {
+      margin-top: 20px;
+      text-align: center;
+      color: #9ece6a; /* Success color */
+      font-weight: 500;
+      min-height: 1.2em;
+      transition: opacity 0.3s ease-in-out;
+    }
+    
+    /* --- Footer --- */
+    footer {
+      text-align: center;
+      padding: 30px;
+      margin-top: 60px;
+      background: rgba(0,0,0,0.8);
+    }
+
+    /* --- Responsive Adjustments --- */
+    @media (max-width: 768px) {
+        nav {
+            padding: 15px 2%;
+            justify-content: space-around; /* Better spacing on smaller screens */
+        }
+        nav a {
+            margin: 0 10px;
+        }
+        .social-bar {
+            flex-direction: row;
+            top: auto;
+            bottom: 0;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 100%;
+            padding: 10px;
+            background: rgba(13, 13, 13, 0.8);
+            justify-content: center;
+        }
+        section {
+            padding: 30px 25px;
+            margin: 80px auto;
+        }
+        /* Stack about me section on mobile */
+        .about-container {
+            flex-direction: column;
+            text-align: center;
+        }
+    }
+
+  </style>
+</head>
+<body>
+
+  <nav id="navbar">
+    <a href="#about">About</a>
+    <a href="#skills">Skills</a>
+    <a href="#projects">Projects</a>
+    <a href="#internship">Internship</a>
+    <a href="#contact">Contact</a>
+  </nav>
+
+  <div class="social-bar">
+    <a href="mailto:akashdoss996@gmail.com" title="Email">
+      <img src="https://cdn-icons-png.flaticon.com/512/732/732200.png" alt="Email">
+    </a>
+    <a href="https://github.com/akashdoss" target="_blank" title="GitHub">
+      <img src="https://cdn-icons-png.flaticon.com/512/733/733553.png" alt="GitHub">
+    </a>
+    <a href="https://www.linkedin.com/in/akash-selvadoss-n-542765252/" target="_blank" title="LinkedIn">
+      <img src="https://cdn-icons-png.flaticon.com/512/3536/3536505.png" alt="LinkedIn">
+    </a>
+  </div>
+
+  <canvas class="particles"></canvas>
+
+  <header>
+    <h1>Akash Selvadoss N</h1>
+    <a href="#about" class="btn">Explore My Work</a>
+  </header>
+  
+  <main>
+    <section id="profile">
+      <h2>Profile Info</h2>
+      <p><strong>From:</strong> Tirunelveli, Tamil Nadu</p>
+      <p><strong>B.Tech:</strong> Artificial Intelligence & Data Science (CGPA: 7.56) - National Engineering College</p>
+      <p><strong>12th:</strong> SAV Balakrishna CBSE School – 69%</p>
+      <p><strong>10th:</strong> SAV Balakrishna CBSE School – 71%</p>
+    </section>
+
+    <section id="about">
+      <h2>About Me</h2>
+      <div class="about-container">
+        <div class="profile-picture-container">
+          <img src="https://i.ibb.co/jPnyVbZs/Gemini-Generated-Image-fqtcpffqtcpffqtc.png" alt="Akash Selvadoss N - Profile Picture" class="profile-picture">
+        </div>
+        <div class="about-text">
+          <p>
+            I am Akash Selvadoss from Tirunelveli, a dedicated student of Artificial Intelligence and Data Science. My interest lies in applying AI and machine learning to solve real-world challenges. I am fascinated by how data can be transformed into meaningful insights and practical applications.
+          </p>
+          <p>
+            Beyond academics, I enjoy building projects that blend creativity with technology. I am also an active content creator, running a YouTube channel with 2.4K+ subscribers, where I share coding tutorials, project demos, and insights about AI.
+          </p>
+        </div>
+      </div>
+    </section>
+
+    <section id="skills">
+      <h2>Skills</h2>
+      <ul>
+        <li>Programming: Java, Python, SQL</li>
+        <li>AI/ML: Generative AI, Machine Learning Techniques</li>
+        <li>Tools: Microsoft Office, GitHub, Render</li>
+        <li>Soft Skills: Communication, Team Management, Adaptability</li>
+      </ul>
+    </section>
+
+    <section id="projects">
+      <h2>Projects</h2>
+      <div class="project-grid">
+        <div class="project-card">
+          <strong>Medobot – Virtual Medical Assistant</strong>
+          <p>
+            Developed an AI chatbot capable of extracting medicine details from text, voice, or images, using Tesseract OCR, Gemini API, and Google Speech Recognition.
+          </p>
+          <div class="project-links-container">
+            <a href="https://github.com/akashdoss/Medobot" target="_blank" class="project-link">
+              <svg width="16" height="16" fill="currentColor" viewBox="0 0 16 16" xmlns="http://www.w3.org/2000/svg"><path d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27s1.36.09 2 .27c1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.01 8.01 0 0 0 16 8c0-4.42-3.58-8-8-8z"></path></svg>
+              GitHub
+            </a>
+          </div>
+        </div>
+        <div class="project-card">
+          <strong>Syntaxia 2.0 – Smart AI Coding Assistant</strong>
+          <p>
+            Developed a sleek web application powered by Google's Gemini API to help developers understand, debug, and improve code with AI-driven explanations and fixes.
+          </p>
+          <div class="project-links-container">
+            <a href="https://syntaxa-20.vercel.app/" target="_blank" class="project-link">Live Demo</a>
+            <a href="https://github.com/akashdoss/Syntaxa_2.0" target="_blank" class="project-link">
+              <svg width="16" height="16" fill="currentColor" viewBox="0 0 16 16" xmlns="http://www.w3.org/2000/svg"><path d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27s1.36.09 2 .27c1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.01 8.01 0 0 0 16 8c0-4.42-3.58-8-8-8z"></path></svg>
+              GitHub
+            </a>
+          </div>
+        </div>
+        <div class="project-card">
+          <strong>GemTalk – AI Chat Interface</strong>
+          <p>
+            Developed a sleek, privacy-focused web application to interact with Google's Gemini models. Built with a Python-Flask backend and a dynamic frontend using vanilla HTML, CSS, and JavaScript.
+          </p>
+          <div class="project-links-container">
+            <a href="https://gemtalk-theta.vercel.app/" target="_blank" class="project-link">Live Demo</a>
+            <a href="https://github.com/akashdoss/GemTalk" target="_blank" class="project-link">
+              <svg width="16" height="16" fill="currentColor" viewBox="0 0 16 16" xmlns="http://www.w3.org/2000/svg"><path d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27s1.36.09 2 .27c1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.01 8.01 0 0 0 16 8c0-4.42-3.58-8-8-8z"></path></svg>
+              GitHub
+            </a>
+          </div>
+        </div>
+        <div class="project-card">
+          <strong>Conversational AI & Visuals</strong>
+          <p>
+            Built an AI chatbot using SambaNova API integrated with a text-to-image generator (Hugging Face + Nebius). Designed to handle interactive queries and generate creative images dynamically.
+          </p>
+          <div class="project-links-container">
+            <a href="https://github.com/akashdoss/AkashGPT" target="_blank" class="project-link">
+              <svg width="16" height="16" fill="currentColor" viewBox="0 0 16 16" xmlns="http://www.w3.org/2000/svg"><path d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27s1.36.09 2 .27c1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.01 8.01 0 0 0 16 8c0-4.42-3.58-8-8-8z"></path></svg>
+              GitHub
+            </a>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section id="internship">
+      <h2>Internship</h2>
+      <p>
+        <strong>Software Intern – Shanmuga AI Technology (Nov - Mar 2025)</strong><br>
+        Worked on backend development for scalable applications, optimized code performance, and collaborated with a cross-functional team using agile practices to deliver features that improved project efficiency.
+      </p>
+      <a href="https://i.ibb.co/HDm9qhnZ/Screenshot-2025-09-19-at-4-23-59-PM.png" target="_blank" class="project-link" style="margin-top: 15px;">View Certificate</a>
+    </section>
+
+    <section id="certifications">
+      <h2>Certifications</h2>
+      <ul>
+        <li>Data Analytics & Visualization Job Simulation (Jun 2024)</li>
+        <li>Machine Learning - Dimensionality Reduction (Jun 2024)</li>
+        <li>Data Analysis with Python (Aug 2024)</li>
+        <li>Database Management System (Springboard, May 2024)</li>
+        <li>E-Business - NPTEL</li>
+      </ul>
+    </section>
+
+    <section id="contact"> <!-- Combined Extra-curricular into a contact section -->
+      <h2>Get In Touch / Find Me Online</h2>
+      <p>
+        I'm always open to discussing new projects, creative ideas, or opportunities to be part of an ambitious team. Feel free to reach out via email or connect with me on social media.
+      </p>
+      <p>
+        You can also check out my YouTube Channel: <strong>Doss Explores</strong>, where I share coding tutorials and tech content with over 2.4K subscribers.  
+        <a href="https://www.youtube.com/@dossexplores1" target="_blank" class="project-link" style="margin-top:10px;">Visit Channel</a>
+      </p>
+      <form id="contact-form">
+        <input type="email" name="email" placeholder="Your Email" required>
+        <textarea name="message" placeholder="Your Message" required></textarea>
+        <button type="submit">Send Message</button>
+      </form>
+      <div id="form-status"></div>
+    </section>
+  </main>
+  
+  <footer>
+    <p>&copy; 2025 Akash Selvadoss N | All Rights Reserved</p>
+  </footer>
+
+  <!-- Background Particle Script -->
+  <script>
+    const canvas = document.querySelector(".particles");
+    const ctx = canvas.getContext("2d");
+    const particleCount = 80, maxDistance = 120;
+    const particleColor = "rgba(255, 255, 255, 0.7)", lineColor = "rgba(255, 204, 112, 0.3)";
+    let particles = [];
+    function setCanvasSize() {
+      canvas.width = window.innerWidth;
+      canvas.height = window.innerHeight;
+    }
+    function createParticles() {
+      particles = [];
+      for (let i = 0; i < particleCount; i++) {
+        particles.push({
+          x: Math.random() * canvas.width, y: Math.random() * canvas.height,
+          radius: Math.random() * 2 + 1,
+          dx: (Math.random() - 0.5) * 0.5, dy: (Math.random() - 0.5) * 0.5,
+        });
+      }
+    }
+    function drawParticles() {
+      particles.forEach(p => {
+        ctx.beginPath(); ctx.arc(p.x, p.y, p.radius, 0, Math.PI * 2);
+        ctx.fillStyle = particleColor; ctx.fill();
+      });
+    }
+    function connectParticles() {
+      for (let i = 0; i < particles.length; i++) {
+        for (let j = i; j < particles.length; j++) {
+          const dist = Math.sqrt((particles[i].x - particles[j].x) ** 2 + (particles[i].y - particles[j].y) ** 2);
+          if (dist < maxDistance) {
+            ctx.beginPath(); ctx.strokeStyle = lineColor;
+            ctx.lineWidth = 1 - dist / maxDistance;
+            ctx.moveTo(particles[i].x, particles[i].y);
+            ctx.lineTo(particles[j].x, particles[j].y);
+            ctx.stroke();
+          }
+        }
+      }
+    }
+    function updateParticles() {
+      particles.forEach(p => {
+        p.x += p.dx; p.y += p.dy;
+        if (p.x < 0 || p.x > canvas.width) p.dx *= -1;
+        if (p.y < 0 || p.y > canvas.height) p.dy *= -1;
+      });
+    }
+    function animate() {
+      ctx.clearRect(0, 0, canvas.width, canvas.height);
+      drawParticles(); connectParticles(); updateParticles();
+      requestAnimationFrame(animate);
+    }
+    setCanvasSize(); createParticles(); animate();
+    window.addEventListener("resize", () => { setCanvasSize(); createParticles(); });
+  </script>
+  
+  <!-- NEW SCRIPT for Active Nav Link on Scroll -->
+  <script>
+    const sections = document.querySelectorAll('main section'); // Target sections inside main
+    const navLinks = document.querySelectorAll('nav a');
+
+    window.addEventListener('scroll', ()=> {
+        let current = '';
+        sections.forEach( section => {
+            const sectionTop = section.offsetTop;
+            const sectionHeight = section.clientHeight;
+            // A buffer of 150px so the link becomes active a bit sooner
+            if(pageYOffset >= (sectionTop - 150)){
+                current = section.getAttribute('id');
+            }
+        });
+
+        navLinks.forEach( a => {
+            a.classList.remove('active');
+            // Check if the link's href matches the current section's id
+            if(a.getAttribute('href').substring(1) === current){
+                a.classList.add('active');
+            }
+        });
+    });
+  </script>
+
+  <!-- NEW SCRIPT for Contact Form Submission -->
+  <script>
+    document.getElementById('contact-form').addEventListener('submit', function(event) {
+      event.preventDefault();
+      const status = document.getElementById('form-status');
+      status.textContent = 'Thank you! Akash Doss has been notified.';
+      this.reset();
+      setTimeout(() => {
+        status.textContent = '';
+      }, 5000);
+    });
+  </script>
+
+</body>
+</html>
+
+
